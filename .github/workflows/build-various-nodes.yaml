@@ -1,0 +1,19 @@
+name: Node.js CI different engines
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [14, 16]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+    - name: Restore Cache
+      id: cache
+      uses: actions/cache@v2
+      with: 
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ matrix.node }}-${{ hashFiles('**/package-lock.json') }}
